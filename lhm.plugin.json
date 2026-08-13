@@ -1,0 +1,304 @@
+{
+  "author": "Timberline Ventures LLC (https://percolateapp.com/)",
+  "cloudEndpoint": "https://wmpiabzlcaqyrzxvfihi.supabase.co/functions/v1/mcp",
+  "description": "MCP server exposing the Percolate specialty coffee database (1,100+ curated coffees) as read-only tools for AI assistants. Search the catalog, dial in brew recipes, compare coffees, and get brew suggestions \u2014 with citation-ready attribution.",
+  "homepage": "https://percolateapp.com/",
+  "identifier": "bguillow-rgb-percolate-mcp",
+  "name": "Percolate",
+  "prompts": [],
+  "resources": [],
+  "tags": [
+    "mcp",
+    "model-context-protocol",
+    "coffee",
+    "specialty-coffee",
+    "espresso",
+    "pourover",
+    "brew-recipes",
+    "percolate"
+  ],
+  "tools": [
+    {
+      "name": "search_coffees",
+      "description": "Search 1,100+ curated specialty coffees in the Percolate database. Filter by category (espresso, single_origin, blend, decaf, dark), roast level, brew method, and price (USD). Returns tasting profiles, brew methods, and where-to-buy links.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Free-text search: coffee or roaster name"
+          },
+          "category": {
+            "type": "string",
+            "enum": [
+              "espresso",
+              "single_origin",
+              "blend",
+              "decaf",
+              "dark"
+            ]
+          },
+          "roast_level": {
+            "type": "string",
+            "enum": [
+              "light",
+              "medium-light",
+              "medium",
+              "medium-dark",
+              "dark"
+            ]
+          },
+          "brew_method": {
+            "type": "string",
+            "description": "e.g. 'espresso', 'pourover', 'french press', 'drip'"
+          },
+          "price_min": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Minimum price in USD"
+          },
+          "price_max": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Maximum price in USD"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 25,
+            "description": "Max results (default 10)"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_coffee",
+      "description": "Detailed record for one coffee: roast level, body/acidity/sweetness profile, flavor notes, suited brew methods, food and brew pairings, price, and retailer links. Accepts a Percolate id or a name.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "id_or_name": {
+            "type": "string",
+            "description": "Coffee id or a name like 'Bean Box Taste of New York City'"
+          }
+        },
+        "required": [
+          "id_or_name"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "find_similar",
+      "description": "Coffees with a similar profile to a given one, ranked by shared flavor notes and roast/body/acidity/sweetness proximity. Deterministic scoring over Percolate's structured tasting data.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "coffee": {
+            "type": "string",
+            "description": "Coffee id or name"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 15,
+            "description": "Max results (default 5)"
+          }
+        },
+        "required": [
+          "coffee"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "get_recommendations",
+      "description": "Personalized coffee picks from flavor preferences (e.g. 'chocolate', 'berry', 'caramel'), a budget in USD, roast preference, and the brew gear you own.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "preferences": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "minItems": 1,
+            "description": "Flavors the drinker enjoys, e.g. ['chocolate','caramel','nutty']"
+          },
+          "budget": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Max price in USD per bag"
+          },
+          "roast_level": {
+            "type": "string",
+            "enum": [
+              "light",
+              "medium-light",
+              "medium",
+              "medium-dark",
+              "dark"
+            ]
+          },
+          "brew_method": {
+            "type": "string",
+            "description": "What you brew with, e.g. 'espresso', 'pourover'"
+          },
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 10,
+            "description": "Max results (default 5)"
+          }
+        },
+        "required": [
+          "preferences"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "compare_coffees",
+      "description": "Side-by-side comparison: roast, body/acidity/sweetness, shared and distinct flavors, brew methods, and price difference.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "coffee_a": {
+            "type": "string",
+            "description": "First coffee \u2014 id or name"
+          },
+          "coffee_b": {
+            "type": "string",
+            "description": "Second coffee \u2014 id or name"
+          }
+        },
+        "required": [
+          "coffee_a",
+          "coffee_b"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "trending_coffees",
+      "description": "Coffees Percolate users are adding to their collections most over the last 30 days (falls back to catalog popularity when live activity data is unavailable). The method used is labeled in the response.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "limit": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "description": "Max results (default 10)"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "dial_in_suggestion",
+      "description": "Brew guidance for a specific coffee: curated recipes from the Percolate catalog (ratio, temperature, grind) when available, or a roast-based starting point. Optionally scoped to your brew method.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "coffee": {
+            "type": "string",
+            "description": "Coffee id or name"
+          },
+          "brew_method": {
+            "type": "string",
+            "description": "Your brewer, e.g. 'V60', 'espresso', 'french press'"
+          }
+        },
+        "required": [
+          "coffee"
+        ],
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    },
+    {
+      "name": "what_to_brew",
+      "description": "A coffee suggestion for right now, based on time of day (evening picks lean decaf), mood, and the brew method you're using \u2014 scored over Percolate's tasting profiles.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "time_of_day": {
+            "type": "string",
+            "enum": [
+              "morning",
+              "afternoon",
+              "evening"
+            ]
+          },
+          "mood": {
+            "type": "string",
+            "description": "e.g. 'need focus', 'lazy weekend', 'something comforting', 'adventurous'"
+          },
+          "brew_method": {
+            "type": "string",
+            "description": "What you're brewing with"
+          }
+        },
+        "additionalProperties": false,
+        "$schema": "http://json-schema.org/draft-07/schema#"
+      },
+      "annotations": {
+        "readOnlyHint": true,
+        "destructiveHint": false,
+        "idempotentHint": true,
+        "openWorldHint": false
+      }
+    }
+  ],
+  "version": "1.0.0"
+}
