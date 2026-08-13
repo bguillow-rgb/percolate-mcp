@@ -1,0 +1,49 @@
+{
+  "name": "percolate-mcp",
+  "version": "1.0.0",
+  "description": "MCP server exposing the Percolate specialty coffee database (1,100+ curated coffees) as read-only tools for AI assistants. Search the catalog, dial in brew recipes, compare coffees, and get brew suggestions — with citation-ready attribution.",
+  "mcpName": "io.github.bguillow-rgb/percolate",
+  "type": "module",
+  "bin": {
+    "percolate-mcp": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "coffee",
+    "specialty-coffee",
+    "espresso",
+    "pourover",
+    "brew-recipes",
+    "percolate"
+  ],
+  "author": "Timberline Ventures LLC (https://percolateapp.com/)",
+  "license": "MIT",
+  "homepage": "https://percolateapp.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bguillow-rgb/percolate-mcp"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0",
+    "@supabase/postgrest-js": "^2.109.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.5.0"
+  }
+}

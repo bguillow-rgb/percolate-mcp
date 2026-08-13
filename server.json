@@ -1,0 +1,20 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "name": "io.github.bguillow-rgb/percolate",
+  "description": "Search the Percolate specialty coffee database: 1,100+ coffees with brew recipes and pairings.",
+  "repository": {
+    "url": "https://github.com/bguillow-rgb/percolate-mcp",
+    "source": "github"
+  },
+  "version": "1.0.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "percolate-mcp",
+      "version": "1.0.0",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
