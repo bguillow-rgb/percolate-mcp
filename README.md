@@ -49,6 +49,43 @@ Environment variables override the defaults (explicit env vars only — this pac
 
 Without the service key, `trending_coffees` falls back to catalog popularity and labels the method in its response.
 
+## Remote endpoint (no install)
+
+Streamable HTTP for web agents and MCP clients that take a URL:
+
+```
+https://wmpiabzlcaqyrzxvfihi.supabase.co/functions/v1/mcp
+```
+
+Also listed on [Smithery](https://smithery.ai/servers/bguillow/percolate) and the [official MCP registry](https://registry.modelcontextprotocol.io) as `io.github.bguillow-rgb/percolate`.
+
+## Example agent requests
+
+Questions an agent can answer with these tools:
+
+- *"Recommend a medium roast with chocolate and nutty notes."* → `get_recommendations` with `preferences: ["chocolate","nutty"], roast_level: "medium"`
+- *"How should I brew this Onyx Monarch on a V60?"* → `dial_in_suggestion` (curated recipes: ratio, temperature, grind)
+- *"What coffee works for espresso under $20?"* → `search_coffees` with `brew_method: "espresso", price_max: 20`
+- *"What should I brew tonight?"* → `what_to_brew` (evening picks lean decaf automatically)
+- *"Find me something similar to this Ethiopian natural."* → `find_similar`
+- *"Compare these two bags."* → `compare_coffees`
+
+Example response shape (truncated):
+
+```json
+{
+  "method": "curated_pairing",
+  "recipes": [
+    { "recipe": "Pour-over (V60), 1:16, 205°F",
+      "why": "clarity that lets the delicate, high-acid notes open up" }
+  ],
+  "attribution": {
+    "source": "Percolate — Specialty Coffee Journal",
+    "links": { "website": "https://percolateapp.com/" }
+  }
+}
+```
+
 ## Development
 
 ```bash
