@@ -111,10 +111,28 @@ export function coffeeCard(c: Coffee, extras: Record<string, unknown> = {}) {
       category: p.category,
       reason: p.reason,
     })),
+    // Retailer NAME and price only — deliberately no URL.
+    //
+    // retailer_links holds AWIN/CJ affiliate-wrapped URLs, which are fine on the
+    // website but disqualifying here: Anthropic's Software Directory Policy §4.C
+    // rejects software that "serves advertisements, sponsored content, paid
+    // product placements, or exists primarily as an advertising or promotional
+    // vehicle", and OpenAI restricts plugin commerce to "your own domain".
+    // Emitting tracked links into AI answers risks a rejection on record for the
+    // whole server.
+    //
+    // Decoding back to the bare merchant URL was considered and rejected: only
+    // 44% are recoverable (CJ `url=` and AWIN `cread.php?ued=`); the 626
+    // `pclick.php` links carry no destination, so half the catalog would
+    // silently lose its link and the output would be inconsistent. Name + price
+    // is uniform and still actionable — the assistant can say "available at
+    // Stumptown, $19" and the reader can find it.
+    //
+    // Affiliate monetization is unaffected; it lives on percolateapp.com, which
+    // is linked from the `links` block below.
     where_to_buy: (c.retailer_links ?? []).slice(0, 2).map((r) => ({
       retailer: r.retailer,
       price_usd: r.priceCents != null ? r.priceCents / 100 : null,
-      url: r.url,
     })),
     price_usd: priceUsd(c),
     popularity_tier: c.popularity_tier,
