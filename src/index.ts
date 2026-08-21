@@ -78,8 +78,8 @@ server.registerTool(
       "Search 1,100+ curated specialty coffees in the Percolate database. Filter by category (espresso, single_origin, blend, decaf, dark), roast level, brew method, and price (USD). Returns tasting profiles, brew methods, and where-to-buy links.",
     inputSchema: {
       query: z.string().optional().describe("Free-text search: coffee or roaster name"),
-      category: z.enum(["espresso", "single_origin", "blend", "decaf", "dark"]).optional(),
-      roast_level: z.enum(["light", "medium-light", "medium", "medium-dark", "dark"]).optional(),
+      category: z.enum(["espresso", "single_origin", "blend", "decaf", "dark"]).optional().describe("Coffee category to filter by; omit to search all"),
+      roast_level: z.enum(["light", "medium-light", "medium", "medium-dark", "dark"]).optional().describe("Roast level to filter by; omit to include all roasts"),
       brew_method: z.string().optional().describe("e.g. 'espresso', 'pourover', 'french press', 'drip'"),
       price_min: z.number().min(0).optional().describe("Minimum price in USD"),
       price_max: z.number().min(0).optional().describe("Maximum price in USD"),
@@ -153,7 +153,7 @@ server.registerTool(
         .min(1)
         .describe("Flavors the drinker enjoys, e.g. ['chocolate','caramel','nutty']"),
       budget: z.number().min(0).optional().describe("Max price in USD per bag"),
-      roast_level: z.enum(["light", "medium-light", "medium", "medium-dark", "dark"]).optional(),
+      roast_level: z.enum(["light", "medium-light", "medium", "medium-dark", "dark"]).optional().describe("Roast level to filter by; omit to include all roasts"),
       brew_method: z.string().optional().describe("What you brew with, e.g. 'espresso', 'pourover'"),
       limit: z.number().int().min(1).max(10).optional().describe("Max results (default 5)"),
     },
@@ -276,7 +276,7 @@ server.registerTool(
     description:
       "A coffee suggestion for right now, based on time of day (evening picks lean decaf), mood, and the brew method you're using — scored over Percolate's tasting profiles.",
     inputSchema: {
-      time_of_day: z.enum(["morning", "afternoon", "evening"]).optional(),
+      time_of_day: z.enum(["morning", "afternoon", "evening"]).optional().describe("When the coffee will be drunk — shifts the pick toward lighter or lower-caffeine options later in the day"),
       mood: z.string().optional().describe("e.g. 'need focus', 'lazy weekend', 'something comforting', 'adventurous'"),
       brew_method: z.string().optional().describe("What you're brewing with"),
     },
