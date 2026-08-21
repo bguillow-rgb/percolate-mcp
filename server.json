@@ -1,20 +1,38 @@
 {
-  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-07-09/server.schema.json",
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.bguillow-rgb/percolate",
+  "title": "Percolate",
   "description": "Search the Percolate specialty coffee database: 1,100+ coffees with brew recipes and pairings.",
+  "version": "1.0.0",
+  "websiteUrl": "https://percolateapp.com/mcp",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/bguillow-rgb/percolate-mcp/main/logo.png",
+      "mimeType": "image/png",
+      "sizes": [
+        "400x400"
+      ]
+    }
+  ],
   "repository": {
     "url": "https://github.com/bguillow-rgb/percolate-mcp",
     "source": "github"
   },
-  "version": "1.0.0",
   "packages": [
     {
       "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "percolate-mcp",
       "version": "1.0.0",
       "transport": {
         "type": "stdio"
       }
+    }
+  ],
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://wmpiabzlcaqyrzxvfihi.supabase.co/functions/v1/mcp"
     }
   ]
 }
