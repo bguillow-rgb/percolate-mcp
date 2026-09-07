@@ -1,7 +1,7 @@
 {
   "author": "Timberline Ventures LLC (https://percolateapp.com/)",
-  "cloudEndpoint": "https://wmpiabzlcaqyrzxvfihi.supabase.co/functions/v1/mcp",
-  "description": "MCP server exposing the Percolate specialty coffee database (1,100+ curated coffees) as read-only tools for AI assistants. Search the catalog, dial in brew recipes, compare coffees, and get brew suggestions \u2014 with citation-ready attribution.",
+  "cloudEndpoint": "https://mcp.percolateapp.com",
+  "description": "Specialty coffee discovery, comparison, brewing and recommendation engine for AI agents. Search 1,100+ curated coffees by origin, roast level, flavor profile, brew method and price; find similar beans; compare coffees; get a curated brew recipe (ratio, temperature, grind) for a specific bag; and get recommendations by taste and gear. Read-only, no API key, every response carries source attribution.",
   "homepage": "https://percolateapp.com/",
   "identifier": "bguillow-rgb-percolate-mcp",
   "name": "Percolate",
@@ -26,6 +26,7 @@
         "properties": {
           "query": {
             "type": "string",
+            "maxLength": 120,
             "description": "Free-text search: coffee or roaster name"
           },
           "category": {
@@ -36,7 +37,8 @@
               "blend",
               "decaf",
               "dark"
-            ]
+            ],
+            "description": "Coffee category to filter by; omit to search all"
           },
           "roast_level": {
             "type": "string",
@@ -46,10 +48,12 @@
               "medium",
               "medium-dark",
               "dark"
-            ]
+            ],
+            "description": "Roast level to filter by; omit to include all roasts"
           },
           "brew_method": {
             "type": "string",
+            "maxLength": 120,
             "description": "e.g. 'espresso', 'pourover', 'french press', 'drip'"
           },
           "price_min": {
@@ -87,6 +91,7 @@
         "properties": {
           "id_or_name": {
             "type": "string",
+            "maxLength": 120,
             "description": "Coffee id or a name like 'Bean Box Taste of New York City'"
           }
         },
@@ -111,6 +116,7 @@
         "properties": {
           "coffee": {
             "type": "string",
+            "maxLength": 200,
             "description": "Coffee id or name"
           },
           "limit": {
@@ -142,9 +148,11 @@
           "preferences": {
             "type": "array",
             "items": {
-              "type": "string"
+              "type": "string",
+              "maxLength": 60
             },
             "minItems": 1,
+            "maxItems": 20,
             "description": "Flavors the drinker enjoys, e.g. ['chocolate','caramel','nutty']"
           },
           "budget": {
@@ -160,10 +168,12 @@
               "medium",
               "medium-dark",
               "dark"
-            ]
+            ],
+            "description": "Roast level to filter by; omit to include all roasts"
           },
           "brew_method": {
             "type": "string",
+            "maxLength": 120,
             "description": "What you brew with, e.g. 'espresso', 'pourover'"
           },
           "limit": {
@@ -194,10 +204,12 @@
         "properties": {
           "coffee_a": {
             "type": "string",
+            "maxLength": 200,
             "description": "First coffee \u2014 id or name"
           },
           "coffee_b": {
             "type": "string",
+            "maxLength": 200,
             "description": "Second coffee \u2014 id or name"
           }
         },
@@ -246,10 +258,12 @@
         "properties": {
           "coffee": {
             "type": "string",
+            "maxLength": 200,
             "description": "Coffee id or name"
           },
           "brew_method": {
             "type": "string",
+            "maxLength": 120,
             "description": "Your brewer, e.g. 'V60', 'espresso', 'french press'"
           }
         },
@@ -278,14 +292,17 @@
               "morning",
               "afternoon",
               "evening"
-            ]
+            ],
+            "description": "When the coffee will be drunk \u2014 shifts the pick toward lighter or lower-caffeine options later in the day"
           },
           "mood": {
             "type": "string",
+            "maxLength": 120,
             "description": "e.g. 'need focus', 'lazy weekend', 'something comforting', 'adventurous'"
           },
           "brew_method": {
             "type": "string",
+            "maxLength": 120,
             "description": "What you're brewing with"
           }
         },
@@ -300,5 +317,5 @@
       }
     }
   ],
-  "version": "1.0.0"
+  "version": "1.0.1"
 }
