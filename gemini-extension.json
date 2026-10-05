@@ -1,0 +1,11 @@
+{
+  "name": "percolate-mcp",
+  "version": "1.0.0",
+  "description": "Look up 1,100+ specialty coffees: tasting profiles, similar coffees, comparisons, brew recipes and picks by flavor, roast, budget and brew gear.",
+  "mcpServers": {
+    "percolate": {
+      "httpUrl": "https://mcp.percolateapp.com/mcp?src=gemini"
+    }
+  },
+  "contextFileName": "GEMINI.md"
+}
